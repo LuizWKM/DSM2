@@ -1,5 +1,6 @@
 create database biblioteca;
 use biblioteca;
+drop database biblioteca;
 
 create table livros
 (
@@ -137,6 +138,36 @@ select * from emprestados;
 select * from livros;
 
 #2. Encontrar todos os autores que têm mais de 50 anos.
-select * from autores; 
+select * from autores where codAutor = 1;
+select * from autores where codAutor = 2;
+select * from autores where codAutor = 3;
 
-drop database biblioteca;
+#3. Mostrar todos os usuários que têm assinatura de 'Professor'.
+select * from usuarios where assinatura = 'Professor';
+
+#4. Listar todos os emprestimos que ainda não foram devolvidos.
+select * from emprestimos where codEmprestimo = 1;
+select * from emprestimos where codEmprestimo = 2;
+select * from emprestimos where codEmprestimo = 3;
+
+#5. Exibir todos os livros junto com os nomes dos autores que os escreveram.
+select * from livrosXautores 
+inner join livros l on livrosXautores.cod_livro = l.codLivro
+inner join autores a on livrosXautores.cod_autor = a.codAutor;
+
+#6. Mostrar todos os empréstimos com o nome do usuário que fez o empréstimo e o título do livro emprestado.
+select * from emprestados 
+inner join livros l on emprestados.cod_livro = l.codLivro
+inner join emprestimos e on emprestados.cod_emprestimo = e.codEmprestimo
+inner join usuarios u on emprestimos.cod_usuario = u.codUsuario;
+
+#7. Listar todos os usuários e seus números de telefone.
+select * from usuariosXtelefones
+inner join usuarios u on usuariosXtelefones.idUsuario = u.codUsuario;
+
+#8. Mostrar todos os e-mails dos usuários que têm assinatura 'Funcionario'.
+select * from usuariosXemails 
+inner join usuarios u on usuariosXemails.idUsuario = u.codUsuario where assinatura = 'Funcionario';
+
+#9.Encontrar todos os livros publicados após 2000 e ordená-los pelo ano de publicação.
+select * from livros
