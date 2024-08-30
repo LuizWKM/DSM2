@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1724973983 source:c:\users\fatec-dsm2\desktop\dsm2\ed\aulas\revisao_dia_22-08-2024\revisao07\main.c
+	<stdio.h>
+	<stdlib.h>
+
