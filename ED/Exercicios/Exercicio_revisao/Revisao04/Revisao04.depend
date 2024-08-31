@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1725058588 source:c:\users\fatec-dsm2\desktop\dsm2\ed\exercicios\exercicio_revisao\revisao04\main.c
+	<stdio.h>
+	<stdlib.h>
+
