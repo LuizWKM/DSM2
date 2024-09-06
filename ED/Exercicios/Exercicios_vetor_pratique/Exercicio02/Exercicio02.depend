@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1725578731 source:c:\users\fatec-dsm2\desktop\dsm2\ed\exercicios\exercicios_vetor_pratique\exercicio02\main.c
+	<stdio.h>
+	<stdlib.h>
+
