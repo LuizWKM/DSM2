@@ -1,4 +1,5 @@
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /*
@@ -13,6 +14,7 @@ import java.util.Scanner;
 public class Quadrado {
     private double numero;
     private double resultado;
+    DecimalFormat conv = new DecimalFormat("0.00");
 
     public Quadrado() {
         this(0,0);
@@ -47,6 +49,6 @@ public class Quadrado {
     }
     
     public void mostrarQuadrado(){
-        System.out.println("O quadrado do número " + getNumero() + " é: " + getResultado() );
+        System.out.println("O quadrado do número " + getNumero() + " é: " + conv.format(getResultado()));
     }
 }
