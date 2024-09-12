@@ -1,5 +1,6 @@
-create database if not exists emptech;
-use emptech;
+create database if not exists EmpTech_Luiz;
+use EmpTech_Luiz;
+
  
 create table if not exists funcionarios(
 codFunc int auto_increment primary key,
@@ -17,12 +18,15 @@ codFunc int
 #inserindo dados nas tabelas
 insert into funcionarios (nomeFunc) values
 ('João Silva'),('Maria Oliveira'),('Pedro Santos'),
-('Ana Costa'),('Lucas Almeida'),('Fernana Lima');
+('Ana Costa'),('Lucas Almeida'),('Fernana Lima'),
+('Carlos Eduardo'),('Marcos Antônio'),('James Hopkins');
 
 insert into veiculos (modelo, placas, codFunc) values
 ('Fiat Uno', 'ABC1D23',1),('Honda Civic', 'XYZ2E34',2),
 ('Toyota Corolla', 'LMN3F45',3),('Chevrolet Onix', 'OPQ4G56',4),
-('VW Gol', 'UVW6I78',5),('Peugeot 208', 'YZA7J89',null);
+('VW Gol', 'UVW6I78',5),('Peugeot 208', 'YZA7J89',null),
+('Mitsubishi Eclipse','VLL4D12',7),('Volkswagen Amarok','POL5N68',8),
+('Chevrolet Onix','JFK5U15',9);
 
 #Inner Join
 select funcionarios.nomeFunc as Nome, veiculos.modelo from veiculos
@@ -86,7 +90,9 @@ descricao varchar(255) not null
 insert into atuacaoVendas(descricao) values
 ('Vendas de Veículos Novos'),('Vendas de Veículos Usados'),
 ('Manutenção e reparo de veículos'),('Serviços de Pós-Vendas'),
-('Consultoria de Vendas'), ('Programações e eventos especiais');
+('Consultoria de Vendas'), ('Programações e eventos especiais'),
+('Compra de Carros Usados'),('Martelinho de ouro'),
+('Aluguel de Veículos');
 
 #Cross Join
 /*Este join ira criar relatorio onde irá fazer todas as combinações
@@ -112,7 +118,7 @@ foreign key (codIndicado) references Funcionarios(codFunc)
 );
 
 insert into indicacoes (codIndicador, codIndicado) values
-(1,2),(1,3),(2,4),(2,5),(4,6);
+(1,2),(1,3),(2,4),(2,5),(4,6),(8,4),(6,5),(3,5);
 
 #Self Join
 /*Gera um resultado de relacionamento de dados de uma tabela com ela
