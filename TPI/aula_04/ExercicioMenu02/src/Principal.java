@@ -19,6 +19,8 @@ public class Principal {
         // TODO code application logic here
     Quadrado qua = new Quadrado();
     int op;
+    double ladoA;
+    ladoA = Double.parseDouble(JOptionPane.showInputDialog("Digite o lado em m do quadrado: "));
     
     do{
     op = Integer.parseInt(JOptionPane.showInputDialog("Digite\n" +
@@ -30,12 +32,21 @@ public class Principal {
     
     switch(op){
         case 1:
-            qua.calcularArea(op);
+            qua.calcularArea(ladoA);
             break;
         case 2:
-            qua.(op);
-    }
-    while(op != 0);
-    }
+            qua.calcularPerimetro(ladoA);
+            break;
+        case 3: 
+            qua.mostrarValores();
+            break;
+        case 0:
+            JOptionPane.showMessageDialog(null, "Finalizando...");
+            break;
+        default:
+            JOptionPane.showMessageDialog(null, "Opção inválida.");
+   } 
+  }while(op != 0);
+ }
 }
     

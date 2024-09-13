@@ -21,18 +21,17 @@ public class Principal {
         Scanner leia = new Scanner(System.in);
         DecimalFormat conv = new DecimalFormat("0.00");
         Combustivel comb = new Combustivel();
-        double km, valorComb;
+        double km, valorC;
         
         System.out.print("Digite o km: ");
         km = leia.nextDouble();
+        
         comb.calcularLitros(km);
         
-        System.out.print("Digite o valor do combustivel R$");
-        valorComb = leia.nextDouble();
-  
- 
-        System.out.println("Você andou " + km + " quilômetros e gastou R$" + conv.format(comb.calcularTotalGasto(valorComb)) + " em litros");
+        System.out.print("Digite o valor do combústivel R$");
+        valorC = leia.nextDouble();
+        
+        System.out.println("Você andou " + km + " quilômetros e gastou R$" + conv.format(comb.calcularTotalGasto(valorC)) + " em litros");
         
     }
-    
 }

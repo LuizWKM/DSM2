@@ -1,3 +1,6 @@
+
+import java.util.Scanner;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,10 +17,20 @@ public class Principal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Scanner leia = new Scanner(System.in);
         Temperatura temp = new Temperatura();
         
-        temp.calcularTempCelsius(124);
-        temp.calcularTempFahrenheit(34);
+        double Fahrenheit;
+        double Celsius;
+        
+        System.out.print("Digite a temperatura em Fahrenheit: ");
+        Fahrenheit = leia.nextDouble();
+        
+        System.out.print("Digite a temperatura em Celsius: ");
+        Celsius = leia.nextDouble();
+        
+        temp.calcularTempCelsius(Fahrenheit);
+        temp.calcularTempFahrenheit(Celsius);
       
     }
     

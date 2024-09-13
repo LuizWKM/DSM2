@@ -19,5 +19,4 @@ public class Principal {
         olimp.calcularMedia();
         olimp.verificarMedia();
     }
-    
 }

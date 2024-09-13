@@ -62,7 +62,7 @@ public class Combustivel {
     
     public double calcularTotalGasto(double valorComb){
         this.setTotalGasto(this.getLitros() * valorComb);
-        return totalGasto;
+        return getTotalGasto();
     }
     
 }
