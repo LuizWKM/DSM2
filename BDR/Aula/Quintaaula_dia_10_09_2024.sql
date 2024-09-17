@@ -1,6 +1,5 @@
 create database if not exists EmpTech_Luiz;
 use EmpTech_Luiz;
-
  
 create table if not exists funcionarios(
 codFunc int auto_increment primary key,
@@ -21,11 +20,11 @@ insert into funcionarios (nomeFunc) values
 ('Ana Costa'),('Lucas Almeida'),('Fernana Lima'),
 ('Carlos Eduardo'),('Marcos Antônio'),('James Hopkins');
 
-insert into veiculos (modelo, placas, codFunc) values
+insert into veiculos(modelo, placas, codFunc) values
 ('Fiat Uno', 'ABC1D23',1),('Honda Civic', 'XYZ2E34',2),
 ('Toyota Corolla', 'LMN3F45',3),('Chevrolet Onix', 'OPQ4G56',4),
 ('VW Gol', 'UVW6I78',5),('Peugeot 208', 'YZA7J89',null),
-('Mitsubishi Eclipse','VLL4D12',7),('Volkswagen Amarok','POL5N68',8),
+('Mitsubishi Eclipse','VLL4D12',8),('Volkswagen Amarok','POL5N68',8),
 ('Chevrolet Onix','JFK5U15',9);
 
 #Inner Join
@@ -118,7 +117,7 @@ foreign key (codIndicado) references Funcionarios(codFunc)
 );
 
 insert into indicacoes (codIndicador, codIndicado) values
-(1,2),(1,3),(2,4),(2,5),(4,6),(8,4),(6,5),(3,5);
+(1,2),(1,3),(2,4),(2,5),(4,6),(8,7),(6,9),(3,8);
 
 #Self Join
 /*Gera um resultado de relacionamento de dados de uma tabela com ela
@@ -128,3 +127,57 @@ select i1.codIndicador as 'ID Indicador', f1.nomeFunc as 'Nome Indicador',
 i1.codIndicado as 'ID Indicado', f2.nomeFunc as 'Nome Indicado' from indicacoes i1
 join funcionarios f1 on i1.codIndicador = f1.codFunc
 join funcionarios f2 on i1.codIndicado = f2.codFunc;
+/* a. Crie uma função chamada `GetFuncionarioVeiculoCount` que recebe o 
+código de um funcionário e retorna o número de veículos associados a esse 
+funcionário. */
+drop function GetFuncionarioVeiculoCount;
+Delimiter //
+create function GetFuncionarioVeiculoCount(ID int) returns int
+begin
+  declare veiculoCount int;
+  select count(*) into veiculoCount from veiculos where codFunc = ID; 
+  return veiculoCount;
+if veiculoCount is null then
+  return 0;
+end if;
+end //
+Delimiter ;
+
+select GetFuncionarioVeiculoCount(8);
+
+/*b. Crie um procedimento armazenado chamado `AddVenda` que insere uma 
+nova atuação de vendas na tabela `AtuacaoVendas`. O procedimento deve 
+receber uma descrição e adicionar a nova atuação de vendas.*/
+
+Delimiter //
+create procedure AddVenda (In des varchar(255))
+begin 
+   insert into atuacaoVendas (descricao) values
+   (des);
+end //
+Delimiter ;
+
+call AddVenda("Comprar Portas");
+select * from atuacaoVendas;
+
+/*a. Crie um gatilho chamado `BeforeInsertIndicacao` que verifica se o 
+funcionário indicado já foi indicado por outro funcionário. Se o funcionário já 
+tiver uma indicação, o gatilho deve lançar um erro e impedir a inserção.*/
+
+Delimiter //
+create trigger BeforeInsertIndicacao
+before insert on indicacoes
+for each row
+begin
+   declare indicacao_existe int;
+   select count(*) into indicacao_existe from indicacoes where codIndicado = new.codIndicado;
+   if  indicacao_existe > 0 then
+   signal sqlstate '45000'
+   set message_text = 'Erro: Esse funcionario já foi indicado!';
+   end if;
+end //
+Delimiter ; 
+
+insert into indicacoes (codIndicador, codIndicado) values
+(8,2);
+

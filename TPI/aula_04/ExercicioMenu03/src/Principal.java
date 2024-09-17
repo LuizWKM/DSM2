@@ -40,9 +40,9 @@ public class Principal {
                     break;
                 case 4:
                     JOptionPane.showMessageDialog(null ,"Percentual de votos brancos: " +
-                    eleit.getPercBrancos() + "\n" +
-                    "Percentual votos nulos: " + eleit.getPercNulo() + "\n" +
-                    "Percentual votos válidos: " + eleit.getPercValidos());
+                    eleit.getPercBrancos() + "%\n" +
+                    "Percentual votos nulos: " + eleit.getPercNulo() + "%\n" +
+                    "Percentual votos válidos: " + eleit.getPercValidos() + "%");
                     break;
                 case 0:
                     JOptionPane.showMessageDialog(null, "Finalizando...");
