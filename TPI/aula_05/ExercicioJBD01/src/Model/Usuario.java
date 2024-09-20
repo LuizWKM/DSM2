@@ -5,6 +5,10 @@
  */
 package Model;
 
+import Control.Conexao;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author luizr
@@ -14,6 +18,8 @@ public class Usuario {
     private String email;
     private String login;
     private String senha;
+    
+    Conexao con = new Conexao();
 
     public Usuario() {
         this("","","","");
@@ -58,5 +64,21 @@ public class Usuario {
         this.senha = senha;
     }
     
+    public void cadastrarUsuario(){
+        String sql;
+        sql = "insert into Usuarios(nome,email,login,senha) values"  +
+        "('" + getNome() + "','" + getEmail() + "','" + getLogin() + "','" +
+        getSenha() + "')";
+        con.executeSQL(sql);
+        JOptionPane.showMessageDialog(null,"Registro salvo com sucesso...");
+    }
+    
+    public ResultSet listarUsuario(){
+        ResultSet tabela;
+        tabela = null;
+        String sql = "select * from Usuarios";
+        tabela = con.RetornarResultset(sql);
+                return tabela;
+    }
     
 }
