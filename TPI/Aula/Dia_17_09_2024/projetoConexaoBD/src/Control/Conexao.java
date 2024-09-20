@@ -16,9 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author fatec-dsm2
  */
-public class Conexao {
-    
-    
+public class Conexao {   
     final private String driver = "com.mysql.jdbc.Driver";
    
     final private String url= "jdbc:mysql://127.0.0.1/aula_java";
