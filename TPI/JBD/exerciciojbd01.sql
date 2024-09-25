@@ -9,3 +9,5 @@ email varchar(100),
 login varchar(100),
 senha varchar(100)
 );
+
+select * from usuarios;
