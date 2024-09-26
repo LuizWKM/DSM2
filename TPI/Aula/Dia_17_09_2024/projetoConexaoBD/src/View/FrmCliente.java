@@ -183,13 +183,13 @@ public class FrmCliente extends javax.swing.JFrame {
 
         jtbl_cliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "id", "Código", "Nome", "Telefone", "Email"
+                "Código", "Nome", "Telefone", "Email"
             }
         ));
         jtbl_cliente.setName(""); // NOI18N
@@ -256,7 +256,7 @@ public class FrmCliente extends javax.swing.JFrame {
     try
     {
         do{
-            modelo.addRow(new String[]{tabela.getString(1), tabela.getString(2), tabela.getString(3), tabela.getString(4), tabela.getString(5)});
+            modelo.addRow(new String[]{tabela.getString(2), tabela.getString(3), tabela.getString(4), tabela.getString(5)});
         }
      while(tabela.next());
     }catch(SQLException erro)

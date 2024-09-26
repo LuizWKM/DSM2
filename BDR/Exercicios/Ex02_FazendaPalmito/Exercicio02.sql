@@ -111,3 +111,10 @@ join palmitos p using(id_palmito)
 group by (id_palmito)
 having sum(v.quantidade_vendida) > 500;
 
+#2 .Criação de Funções, Procedures e Triggers:
+/*a. Calcular o total de vendas de um palmito*/
+Delimiter //
+create function tv_palmito
+
+Delimiter ;
+
