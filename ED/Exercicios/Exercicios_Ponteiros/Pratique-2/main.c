@@ -49,6 +49,6 @@ int main()
     se uma soma de (*p) += x, que é a mesma coisa que conteúdo
     de p = *p + x, que seria (*p) = 1 + 3, logo conteúdo de p
     = 4, e y por estar sendo o espaço de memória que p está apontando
-    também se torna 4, logo a resposta é 4.;
+    também se torna 4, logo a resposta é 4.
 */
 

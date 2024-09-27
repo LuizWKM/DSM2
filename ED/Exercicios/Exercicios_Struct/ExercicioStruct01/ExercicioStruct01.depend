@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1727400012 source:c:\users\fatec-dsm2\desktop\dsm2\ed\exercicios\exercicios_struct\exerciciostruct01\main.c
+	<stdio.h>
+	<stdlib.h>
+
