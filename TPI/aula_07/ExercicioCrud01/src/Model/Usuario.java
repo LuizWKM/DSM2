@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
  * @author luizr
  */
 public class Usuario {
+    private int id;
     private String nome;
     private String email;
     private String login;
@@ -21,16 +22,25 @@ public class Usuario {
 
     Conexao con = new Conexao();
     public Usuario() {
-        this("","","","");
+        this(0,"","","","");
     }
 
-    public Usuario(String nome, String email, String login, String senha) {
+    public Usuario(int id,String nome, String email, String login, String senha) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.login = login;
         this.senha = senha;
     }
 
+    public int getId(){
+        return id;
+    }
+    
+    public void setId(int id){
+        this.id = id;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -64,9 +74,12 @@ public class Usuario {
     }
     
     public void cadastrarUsuario(){
-        String sql= "Insert into usuarios(,Nome,Email,Login,Senha)values "+
+        String sql= "Insert into usuarios(Nome,Email,Login,Senha)values "+
                 "('" + this.getNome() + "','" + this.getEmail()+"','"+this.getLogin()+"','"+this.getSenha()+"')";
         con.executeSQL(sql);
+        sql="select id from usuarios where nome='"+getNome()+"'";
+        ResultSet rs = con.RetornarResultset(sql);
+
         JOptionPane.showMessageDialog(null, "Registrado com sucesso");    
     }
     
@@ -81,14 +94,14 @@ public class Usuario {
     
     public void excluirUsuario(){
         String sql;
-        sql= "Delete from usuarios where nome="+ getNome();
+        sql= "Delete from usuarios where id="+ getId();
         con.executeSQL(sql);
         JOptionPane.showMessageDialog(null, "Registro excluido com sucesso...");
     }
     
     public void alterarUsuario(){
         String sql;
-        sql="Update usuario set nome='"+ getNome()+"',email='"+getEmail()+"' where codigo="+ getLogin();
+        sql="Update usuario set nome='"+ getNome()+"',email='"+getEmail()+"',login='" + getLogin() + "',senha='" + getSenha() + "' where id="+ getId();
         con.executeSQL(sql);
         JOptionPane.showMessageDialog(null, "Registro alterado com sucesso...");
         
