@@ -106,9 +106,6 @@ select * from membros;
 select * from emprestimos;
 select * from multas;
 
-update emprestimos set data_devolucao='2024-10-25', devolvido='true'
-where emprestimo_id=1;
-
 /*
 Quando adicionar emprestimo estoque = estoque - 1
 Quando devolução for feita estoque = estoque + 1
@@ -116,7 +113,7 @@ Quando devolução for feita estoque = estoque + 1
 
 CREATE OR REPLACE FUNCTION atualiza_estoque() RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.emprestimo_id AND NEW.devolvido = FALSE THEN
+	IF NEW.emprestimo_id IS NOT NULL AND NEW.devolvido = FALSE THEN
 	    UPDATE livros
     	SET estoque = estoque - 1
         where livros.livro_id = NEW.livro_id;
@@ -130,3 +127,8 @@ CREATE TRIGGER trigger_atualiza_estoque
 AFTER UPDATE ON emprestimos
 FOR EACH ROW
 EXECUTE FUNCTION atualiza_estoque();
+
+insert into emprestimos(livro_id,membro_id,data_prevista_devolucao) values
+(3,2,'2024-10-20');
+
+update emprestimos set data_devolucao='2024-10-30', devolvido='true' where emprestimo_id=3;
