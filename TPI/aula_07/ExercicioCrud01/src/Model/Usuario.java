@@ -6,8 +6,10 @@
 package Model;
 
 import Control.Conexao;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -75,28 +77,35 @@ public class Usuario {
     }
     
     public void cadastrarUsuario() {
+    con.conecta();  // Abre a conexão com o banco
     try {
-        // Realiza o comando de inserção
-        String sql = "INSERT INTO usuarios (Nome, Email, Login, Senha) VALUES " +
-                     "('" + this.getNome() + "','" + this.getEmail() + "','" + this.getLogin() + "','" + this.getSenha() + "')";
+        String sql = "INSERT INTO usuarios (nome, email, login, senha) VALUES (?, ?, ?, ?)";
         
-        con.executeSQL(sql);  // Executa o INSERT
-
-        // Consulta para obter o ID gerado pela inserção
-        sql = "SELECT LAST_INSERT_ID() AS id";
-        ResultSet rs = con.RetornarResultset(sql);  // Executa o SELECT
-
-        if (rs != null && rs.next()) {  // Verifica se há resultado
-            int id = rs.getInt("id");   // Obtém o ID gerado
-            setId(id);                  // Define o ID no objeto
-            JOptionPane.showMessageDialog(null, "Registrado com sucesso! ID: " + getId());
+        PreparedStatement stmt = con.conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        
+        // Passa os valores para o PreparedStatement
+        stmt.setString(1, this.getNome());
+        stmt.setString(2, this.getEmail());
+        stmt.setString(3, this.getLogin());
+        stmt.setString(4, this.getSenha());
+        
+        stmt.executeUpdate();
+        
+        // Recupera o ID gerado automaticamente
+        ResultSet generatedKeys = stmt.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            int idGerado = generatedKeys.getInt(1);
+            JOptionPane.showMessageDialog(null, "Registrado com sucesso! ID: " + idGerado);
+            setId(idGerado);
         } else {
-            JOptionPane.showMessageDialog(null, "Erro ao consultar o ID.");
+            JOptionPane.showMessageDialog(null, "Falha ao obter o ID gerado.");
         }
-
+        
+        stmt.close();  // Fecha o PreparedStatement
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Erro ao cadastrar: " + e.getMessage());
     }
+    con.desconecta();  // Fecha a conexão com o banco
 }
     public ResultSet consultarUsuario(){
         ResultSet tabela;

@@ -28,23 +28,26 @@ public class FCadUsuario extends javax.swing.JFrame {
     Usuario usu = new Usuario();
     Conexao con = new Conexao();
     public void consultardados(){
-         ResultSet tabela;
-    tabela = null;
-    
-    tabela = usu.consultarUsuario();
-    DefaultTableModel modelo = (DefaultTableModel) jtbl_Usuarios.getModel();
-    modelo.setNumRows(0);
-    try
-    {
-        do{
+    ResultSet tabela = null;
+    try {
+        tabela = usu.consultarUsuario();
+        DefaultTableModel modelo = (DefaultTableModel) jtbl_Usuarios.getModel();
+        modelo.setNumRows(0);
+        while(tabela.next()) {
             modelo.addRow(new String[]{tabela.getString(2), tabela.getString(3), tabela.getString(4), tabela.getString(5)});
         }
-     while(tabela.next());
-    }catch(SQLException erro)
-            {
-            JOptionPane.showMessageDialog(null, "Erro ao preencher tabela"+ erro) ;    
-             }
+    } catch(SQLException erro) {
+        JOptionPane.showMessageDialog(null, "Erro ao preencher tabela: " + erro.getMessage());
+    } finally {
+        try {
+            if (tabela != null) tabela.close();
+            if (con.statement != null) con.statement.close();
+            con.desconecta();  // Fechar a conexão ao final
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar recursos: " + e.getMessage());
+        }
     }
+}
     
     /**
      * This method is called from within the constructor to initialize the form.

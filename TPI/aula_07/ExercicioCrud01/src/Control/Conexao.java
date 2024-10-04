@@ -23,7 +23,7 @@ public class Conexao {
     
     final private String usuario="root";
     final private String senha="";
-    private Connection conexao;// objeto que faz conexao com o banco
+    public Connection conexao;// objeto que faz conexao com o banco
     public Statement statement;// objeto que abre caminho até o banco
     public ResultSet resultset;// objeto que armazena os comandos sql   
     
@@ -59,30 +59,34 @@ public class Conexao {
         }
     }
      
-     public void executeSQL(String sql){
-//chamada do metodo conecta para abrir a conexão com o db
-        conecta();
-        try{
-    
+     public void executeSQL(String sql) {
+    conecta();
+    Statement statement = null;
+    try {
         statement = conexao.createStatement();
-
         statement.execute(sql);
-        //desconecta();
-        }catch(SQLException sqle){
-           JOptionPane.showMessageDialog(null, "Driver não encontrado1" + sqle.getMessage());
+    } catch (SQLException sqle) {
+        JOptionPane.showMessageDialog(null, "Erro ao executar SQL: " + sqle.getMessage());
+    } finally {
+        try {
+            if (statement != null) statement.close();
+            if (conexao != null) conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar recursos: " + e.getMessage());
         }
+    }
 }
     
-    public ResultSet RetornarResultset(String sql){
-         ResultSet resultSet = null;
-         conecta();
-         try{
-         statement = conexao.createStatement();
-         resultSet = statement.executeQuery(sql);
-         resultSet.next();
-         }catch (Exception e){
-         JOptionPane.showMessageDialog(null, "Erro ao retornar resultset"+e.getMessage());
-         }
-         return resultSet;
- }
+    public ResultSet RetornarResultset(String sql) {
+    ResultSet resultSet = null;
+    conecta();
+    try {
+        statement = conexao.createStatement();
+        resultSet = statement.executeQuery(sql);
+        return resultSet;  // Retorna o ResultSet sem mover o cursor
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao retornar resultset: " + e.getMessage());
+        return null;
+    }
+}
 }
