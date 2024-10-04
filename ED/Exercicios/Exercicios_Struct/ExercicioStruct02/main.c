@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define H 2
+#define MAX 500
 typedef struct Habitantes{
 int idade;
 char sexo;
@@ -12,9 +12,9 @@ int main()
 {
 int i;
 float salT = 0, mediaS = 0;
-hab hab1[H];
+hab hab1[MAX];
 
-for(i = 0; i < H;i++){
+for(i = 0; i < MAX;i++){
 printf("\nDigite a idade do habitante: ");
 scanf("%d", &hab1[i].idade);
 
@@ -30,11 +30,12 @@ scanf("%d", &hab1[i].numF);
 salT += hab1[i].salario;
 }
 
-for(i = 0; i < H;i++){
+for(i = 0; i < MAX;i++){
   printf("\n\nIdade do habitante: %d\nSexo do habitante: %c\nSalario do habitante R$%.2f\n",
          hab1[i].idade, hab1[i].sexo, hab1[i].salario);
   printf("\nNumero de filhos: %d", hab1[i].numF);
 }
-mediaS = salT / H;
+mediaS = salT / MAX;
 printf("\nA media dos salarios dos habitantes eh R$%.2f", mediaS);
+return 0;
 }

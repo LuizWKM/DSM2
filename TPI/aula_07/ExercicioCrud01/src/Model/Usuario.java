@@ -7,6 +7,7 @@ package Model;
 
 import Control.Conexao;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -73,16 +74,30 @@ public class Usuario {
         this.senha = senha;
     }
     
-    public void cadastrarUsuario(){
-        String sql= "Insert into usuarios(Nome,Email,Login,Senha)values "+
-                "('" + this.getNome() + "','" + this.getEmail()+"','"+this.getLogin()+"','"+this.getSenha()+"')";
-        con.executeSQL(sql);
-        sql="select id from usuarios where nome='"+getNome()+"'";
-        ResultSet rs = con.RetornarResultset(sql);
+    public void cadastrarUsuario() {
+    try {
+        // Realiza o comando de inserção
+        String sql = "INSERT INTO usuarios (Nome, Email, Login, Senha) VALUES " +
+                     "('" + this.getNome() + "','" + this.getEmail() + "','" + this.getLogin() + "','" + this.getSenha() + "')";
+        
+        con.executeSQL(sql);  // Executa o INSERT
 
-        JOptionPane.showMessageDialog(null, "Registrado com sucesso");    
+        // Consulta para obter o ID gerado pela inserção
+        sql = "SELECT LAST_INSERT_ID() AS id";
+        ResultSet rs = con.RetornarResultset(sql);  // Executa o SELECT
+
+        if (rs != null && rs.next()) {  // Verifica se há resultado
+            int id = rs.getInt("id");   // Obtém o ID gerado
+            setId(id);                  // Define o ID no objeto
+            JOptionPane.showMessageDialog(null, "Registrado com sucesso! ID: " + getId());
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao consultar o ID.");
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário: " + e.getMessage());
     }
-    
+}
     public ResultSet consultarUsuario(){
         ResultSet tabela;
         tabela = null;
@@ -101,7 +116,7 @@ public class Usuario {
     
     public void alterarUsuario(){
         String sql;
-        sql="Update usuario set nome='"+ getNome()+"',email='"+getEmail()+"',login='" + getLogin() + "',senha='" + getSenha() + "' where id="+ getId();
+        sql="Update usuarios set nome='"+ getNome()+"',email='"+getEmail()+"',login='" + getLogin() + "',senha='" + getSenha() + "' where id="+ getId();
         con.executeSQL(sql);
         JOptionPane.showMessageDialog(null, "Registro alterado com sucesso...");
         

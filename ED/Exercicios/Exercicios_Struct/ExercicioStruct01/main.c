@@ -8,31 +8,32 @@ typedef struct Livro{
     }liv;
 int main()
 {
-    int i, numPT = 0;
-    float mediaP;
-    liv vet[2];
+    int i;
+    double mediaP = 0;
+    liv livros[5];
     for(i = 0;i < 5;i++){
+       fflush(stdin);
        printf("\nDigite o titulo do livro: ");
-       scanf("%s", &vet[i].titulo);
-
+       scanf("%s", &livros[i].titulo);
+       fflush(stdin);
        printf("Digite o ano da edicao: ");
-       scanf("%d", &vet[i].anoE);
+       scanf("%d", &livros[i].anoE);
 
        printf("Digite o numero de paginas: ");
-       scanf("%d", &vet[i].numP);
+       scanf("%d", &livros[i].numP);
 
        printf("Digite o preco R$");
-       scanf("%f", &vet[i].preco);
+       scanf("%f", &livros[i].preco);
 
-       numPT += vet[i].numP;
+       mediaP += livros[i].numP;
        fflush(stdin);
     }
 
-    mediaP = (float)numPT / 5;
+    mediaP /= 5.00;
     for(i = 0;i < 5;i++){
-        printf("\n\nTitulo do livro: %s\nAno da edicao: %d\n", vet[i].titulo, vet[i].anoE);
-        printf("Numero de paginas: %d\nPreco R$%.2f", vet[i].numP, vet[i].preco);
+        printf("\n\nTitulo do livro: %s\nAno da edicao: %d\n", livros[i].titulo, livros[i].anoE);
+        printf("Numero de paginas: %d\nPreco R$%.2f", livros[i].numP, livros[i].preco);
     }
-    printf("\nMedia do numero de paginas: %.2f\n\n", mediaP);
+    printf("\n\nMedia do numero de paginas: %.2lf\n\n", mediaP);
     return(0);
 }
