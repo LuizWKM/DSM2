@@ -114,7 +114,66 @@ having sum(v.quantidade_vendida) > 500;
 #2 .Criação de Funções, Procedures e Triggers:
 /*a. Calcular o total de vendas de um palmito*/
 Delimiter //
-create function tv_palmito
+create function tv_palmito(id int, qtd int) returns decimal(10,2)
+BEGIN
+declare estoque_at int;
+declare est_atuali int;
 
+set estoque_atuali = estoque_at - qtd;
+
+return estoque_atuali;
+END //
 Delimiter ;
 
+select tv_palmito(2,40);
+
+/*b. Inserir uma nova venda e atualizar o estoque.*/
+
+delimiter //
+create procedure baixaDeVenda(in id int, in qtd int)
+BEGIN
+declare valorT decimal(10,2);
+
+set valorT = tv_palmito(id,qtd);
+insert into vendas(id_palmito, quantidade_vendida, data_venda, preco_total) values
+(id, qtd, curdate(), valorT);
+END //
+delimiter ;
+
+call baixaDeVenda(2,40);
+select * from vendas;
+
+/*c.  Atualizar o estoque automaticamente ao inserir uma nova compra */
+delimiter //
+create function est_atualizar(id int, qtd int) returns int
+BEGIN
+declare estoque_atual int;
+declare estoque_atualizado int;
+set estoque_atualizado = estoque_atual - qtd;
+return estoque_atualizado;
+END // 
+delimiter ;
+
+delimiter //
+create procedure at_estoque(in id int, in qtd int) 
+BEGIN
+
+declare estoque_atualizado int;
+set estoque_atualizado = est_atualizar(id, qtd);
+update palmitos set estoque_atual = estoque_atualizado where id_palmito = id;
+END //
+delimiter ;
+
+delimiter //
+create trigger atualiza_estoque
+after insert on vendas
+for each row
+begin
+call at_estoque(new.id_palmito, new.quantidade_vendida);
+end//
+delimiter ;
+
+call baixaDeVenda(1, 40);
+
+select * from vendas;
+select * from palmitos;
