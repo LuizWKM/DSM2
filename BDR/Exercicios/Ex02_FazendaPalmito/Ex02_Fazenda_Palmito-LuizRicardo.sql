@@ -103,6 +103,7 @@ from vendas v
 join palmitos p using(id_palmito)
 group by id_palmito;
 
+
 /*d.  Consulta 4: Listar os tipos de palmito cuja venda total excedeu 500 
 unidades, utilizando HAVING.*/
 select p.tipo_palmito as "Tipo de Palmito", sum(v.quantidade_vendida) as "Total de vendas"
@@ -114,62 +115,75 @@ having sum(v.quantidade_vendida) > 500;
 #2 .Criação de Funções, Procedures e Triggers:
 /*a. Calcular o total de vendas de um palmito*/
 Delimiter //
-create function tv_palmito(id int, qtd int) returns decimal(10,2)
+create function tv_palmito(id int) returns int
 BEGIN
-declare estoque_at int;
-declare est_atuali int;
+declare totalV int;
+select count(id_venda) into totalV from vendas where  id = id_palmito; 
 
-set estoque_atuali = estoque_at - qtd;
-
-return estoque_atuali;
+return totalV;
 END //
 Delimiter ;
 
-select tv_palmito(2,40);
+select tv_palmito(1) as "Total de vendas do palmito";
 
 /*b. Inserir uma nova venda e atualizar o estoque.*/
+delimiter //
+create function totaldV(id int, qtd int) returns decimal(10, 2)
+BEGIN
+declare totalPrec decimal(10,2);
+declare precoU decimal(10,2);
+select preco_venda into precoU from palmitos where id = id_palmito;
+set totalPrec = precoU * qtd;
+return totalPrec;
+END // 
+delimiter ;
+select totaldV(1,50);
+
+delimiter //
+create function fun_esto(id int, qtd int) returns int
+BEGIN 
+declare est_atz int;
+declare est_at int;
+
+select estoque_atual into est_at from palmitos where id = id_palmito;
+set est_atz = est_at - qtd;
+
+return est_atz;
+END //
+delimiter ;
+select fun_esto(1,10);
+
 
 delimiter //
 create procedure baixaDeVenda(in id int, in qtd int)
 BEGIN
 declare valorT decimal(10,2);
+set valorT = totaldV(id,qtd);
 
-set valorT = tv_palmito(id,qtd);
 insert into vendas(id_palmito, quantidade_vendida, data_venda, preco_total) values
 (id, qtd, curdate(), valorT);
+
 END //
 delimiter ;
 
-call baixaDeVenda(2,40);
-select * from vendas;
+delimiter //
+create procedure atualEst(in id int, in qtd int) 
+BEGIN
+declare estoqueAtua int;
+set estoqueAtua = fun_esto(id,qtd);
+
+update palmitos set estoque_atual = estoqueAtua where id_palmito = id;
+END//
+delimiter ;
 
 /*c.  Atualizar o estoque automaticamente ao inserir uma nova compra */
-delimiter //
-create function est_atualizar(id int, qtd int) returns int
-BEGIN
-declare estoque_atual int;
-declare estoque_atualizado int;
-set estoque_atualizado = estoque_atual - qtd;
-return estoque_atualizado;
-END // 
-delimiter ;
-
-delimiter //
-create procedure at_estoque(in id int, in qtd int) 
-BEGIN
-
-declare estoque_atualizado int;
-set estoque_atualizado = est_atualizar(id, qtd);
-update palmitos set estoque_atual = estoque_atualizado where id_palmito = id;
-END //
-delimiter ;
 
 delimiter //
 create trigger atualiza_estoque
 after insert on vendas
 for each row
 begin
-call at_estoque(new.id_palmito, new.quantidade_vendida);
+call atualEst(new.id_palmito, new.quantidade_vendida);
 end//
 delimiter ;
 
@@ -177,3 +191,19 @@ call baixaDeVenda(1, 40);
 
 select * from vendas;
 select * from palmitos;
+
+#3. Criação de Views:
+/*a. Mostrar a situação atual do estoque.*/
+create view Est_Atual as
+select id_palmito as "ID do palmito", tipo_palmito as "Tipo do palmito", estoque_atual as "Estoque atual do palmito" 
+from palmitos;
+ 
+select * from Est_Atual;
+ 
+/*b. Exibir o histórico de vendas por tipo de palmito.*/
+create view Hist_VP as
+select p.id_palmito as "ID do palmito", p.tipo_palmito as "Tipo do palmito", v.quantidade_vendida as "Quantidade vendida", 
+v.data_venda as "Data da venda", v.preco_total as "Preço total" from vendas v
+join palmitos p using(id_palmito) order by tipo_palmito;
+
+select * from Hist_VP;

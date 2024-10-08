@@ -10,7 +10,9 @@
               <Image iconType="3" name="/View/icones/novo.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Arquivo"/>
+            <Property name="horizontalAlignment" type="int" value="11"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalAlignment" type="int" value="1"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <SubComponents>
@@ -22,7 +24,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/View/icones/account.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Cadastrar Usu&#xe1;rio"/>
+                <Property name="text" type="java.lang.String" value="Cadastrar Produto"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem1MouseClicked"/>
@@ -71,7 +73,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
