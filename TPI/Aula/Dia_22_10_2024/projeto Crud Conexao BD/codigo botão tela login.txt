@@ -1,0 +1,31 @@
+//código botão logar
+
+        usu.setSenha(txtSenha.getText());
+        usu.setLogin(txtLogin.getText());
+
+        ResultSet tabela;
+        tabela = null;
+
+        tabela = usu.logar();
+
+        try {
+            if(tabela.first()) {
+
+                JOptionPane.showMessageDialog(null,"usuario autenticado");
+
+                String  usuarioLogado = txtLogin.getText();
+
+                FMenu telaPrincipal = new FMenu();
+                telaPrincipal.setVisible(true);
+
+                telaPrincipal.lblLogar.setText(usuarioLogado);
+        
+
+            } else {
+
+                JOptionPane.showMessageDialog(null,"não existe esse usuário no banco");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
