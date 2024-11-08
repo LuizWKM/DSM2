@@ -12,6 +12,7 @@ int main()
         *(pt + i) = 0;
         printf("\n%d %d", i, *(pt + i));
     }
+
     for(i = 0;i < tam;i++){
         *(pt + i) = i + 1;
         printf("\n%d %d", i, *(pt + i));

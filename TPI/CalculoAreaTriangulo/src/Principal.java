@@ -31,6 +31,10 @@ public class Principal {
                 break;
             case 3:
                 JOptionPane.showMessageDialog(null,"A área do triângulo é: " + tri.mostrarAreaTriangulo() + "m²");
+                break;
+            default:
+                JOptionPane.showMessageDialog(null,"Opção inválida!");
+                break;
         }
           } while (i != 0);
      }
