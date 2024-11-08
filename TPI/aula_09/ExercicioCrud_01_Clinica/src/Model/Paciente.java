@@ -5,6 +5,10 @@
  */
 package Model;
 
+import Control.Conexao;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author fatec-dsm2
@@ -16,20 +20,22 @@ public class Paciente {
     private String complemento;
     private String rg;
     private String cpf;
-    private String data_nasc;
+    private String data_Nasc;
 
+    Conexao con = new Conexao();
+    
     public Paciente() {
         this(0,"","","","","","");
     }
 
-    public Paciente(int cod_Paci, String nome_Paci, String endereco, String complemento, String rg, String cpf, String data_nasc) {
+    public Paciente(int cod_Paci, String nome_Paci, String endereco, String complemento, String rg, String cpf, String data_Nasc) {
         this.cod_Paci = cod_Paci;
         this.nome_Paci = nome_Paci;
         this.endereco = endereco;
         this.complemento = complemento;
         this.rg = rg;
         this.cpf = cpf;
-        this.data_nasc = data_nasc;
+        this.data_Nasc = data_Nasc;
     }
 
     public int getCod_Paci() {
@@ -80,13 +86,62 @@ public class Paciente {
         this.cpf = cpf;
     }
 
-    public String getData_nasc() {
-        return data_nasc;
+    public String getData_Nasc() {
+        return data_Nasc;
     }
 
-    public void setData_nasc(String data_nasc) {
-        this.data_nasc = data_nasc;
+    public void setData_Nasc(String data_Nasc) {
+        this.data_Nasc = data_Nasc;
+    }
+
+    public void cadastrarPaciente(){           
+      String sql= "Insert into pacientes(cod_paci,nome_paci, endereco, complemento, rg, cpf, data_nasc)values "+
+                "(" + this.getCod_Paci() + ",'" + this.getNome_Paci()+"','"+this.getEndereco()+"','"+this.getComplemento()+"','"+ this.getRg()+ "', '" 
+              + this.getCpf() + "', '" + this.getData_Nasc() + "' )";
+        con.executeSQL(sql);
+        JOptionPane.showMessageDialog(null, "Registrado com sucesso");     
+    }
+  
+    public ResultSet consultar(){
+        ResultSet tabela;
+        tabela = null;
+        
+        String sql= "Select * from pacientes";
+        tabela = con.RetornarResultset(sql);
+     return tabela;   
+    }
+     
+    public void excluir(){
+        String sql;
+        sql= "Delete from pacientes where cod_paci="+ getCod_Paci();
+        con.executeSQL(sql);
+        JOptionPane.showMessageDialog(null, "Registro excluido com sucesso...");
+    }
+      
+    public void alterar(){
+        String sql;
+        sql="Update pacientes set nome_paci='"+ this.getNome_Paci()+"',endereco='"+ this.getEndereco()
+                + "', complemento='" + this.getComplemento() + "', rg='" + this.getRg()  
+                + "', cpf ='" + this.getCpf() + "',data_nasc='" + this.getData_Nasc() 
+                + "' where cod_paci="+ this.getCod_Paci();
+        con.executeSQL(sql);
+        JOptionPane.showMessageDialog(null, "Registro alterado com sucesso...");
+        
     }
     
+    public ResultSet consultarCampoEspecifico(){
+        ResultSet tabela;
+        tabela = null;
+    
+        try{
+          String sql="Select * from pacientes where nome_paci like '"+ getNome_Paci()+"%'";
+          tabela= con.RetornarResultset(sql);                  
+       
+           }
+           catch(Exception sqle){
+                JOptionPane.showMessageDialog(null,"Atenção..."+sqle.getMessage());
+           }
+        return tabela;    
+    }
     
 }
